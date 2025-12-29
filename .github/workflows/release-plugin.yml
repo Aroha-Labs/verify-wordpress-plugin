@@ -48,4 +48,10 @@ jobs:
       - name: Create plugin zip
         run: |
           cd wordpress-plugin
-          zip -r ../mira-verify.zip . -x "*.git*" -x "*.zip"
+          zip -r ../mira-verify.zip . \
+            -x "*.sh" \
+            -x "docker-compose.yml" \
+            -x ".git/*" \
+            -x ".DS_Store" \
+            -x "*.zip" \
+            -x ".wordpress-org/*"
