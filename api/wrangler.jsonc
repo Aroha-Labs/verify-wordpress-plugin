@@ -25,12 +25,6 @@
 	"vars": {
 		"APP_URL": "https://verify-wp.mira.network"
 	},
-	"routes": [
-		{
-			"pattern": "verify-wp.mira.network/*",
-			"custom_domain": true
-		}
-	],
 	"dev": {
 		"port": 24601
 	}
