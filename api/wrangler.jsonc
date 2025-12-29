@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "api",
+	"name": "verify-wp",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-12-24",
 	"compatibility_flags": ["nodejs_compat"],
@@ -18,13 +18,19 @@
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "mira-verify-db",
-			"database_id": "local"
+			"database_name": "verify-wordpress-plugin",
+			"database_id": "23b12413-0aeb-432b-84fc-6b3538bffc40"
 		}
 	],
 	"vars": {
-		"APP_URL": "https://verify-wordpress-plugin.groo.dev"
+		"APP_URL": "https://verify-wp.mira.network"
 	},
+	"routes": [
+		{
+			"pattern": "verify-wp.mira.network/*",
+			"custom_domain": true
+		}
+	],
 	"dev": {
 		"port": 24601
 	}

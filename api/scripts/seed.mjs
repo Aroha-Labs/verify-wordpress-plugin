@@ -2,13 +2,32 @@
 
 import { spawnSync } from "child_process";
 
-const DB_NAME = "mira-verify-db";
+const DB_NAME = "verify-wordpress-plugin";
+
+// Check if --remote flag is passed
+const isRemote = process.argv.includes("--remote");
+
+// Production Stripe Price IDs (same Stripe account as dev)
+const PROD_PRICE_IDS = {
+  starter: "price_1ShoRWBWnhNxYVZIULT3fiww",
+  pro: "price_1ShoSbBWnhNxYVZIiBh24UyM",
+  business: "price_1ShoSxBWnhNxYVZICr7FvJch",
+};
+
+// Dev Stripe Price IDs
+const DEV_PRICE_IDS = {
+  starter: "price_1ShoRWBWnhNxYVZIULT3fiww",
+  pro: "price_1ShoSbBWnhNxYVZIiBh24UyM",
+  business: "price_1ShoSxBWnhNxYVZICr7FvJch",
+};
+
+const priceIds = isRemote ? PROD_PRICE_IDS : DEV_PRICE_IDS;
 
 const plans = [
   {
     id: "plan_starter",
     name: "Starter",
-    stripePriceId: "price_1ShoRWBWnhNxYVZIULT3fiww",
+    stripePriceId: priceIds.starter,
     monthlyLimit: 100,
     siteLimit: 1,
     price: 1900,
@@ -21,7 +40,7 @@ const plans = [
   {
     id: "plan_pro",
     name: "Pro",
-    stripePriceId: "price_1ShoSbBWnhNxYVZIiBh24UyM",
+    stripePriceId: priceIds.pro,
     monthlyLimit: 500,
     siteLimit: 5,
     price: 4900,
@@ -35,7 +54,7 @@ const plans = [
   {
     id: "plan_business",
     name: "Business",
-    stripePriceId: "price_1ShoSxBWnhNxYVZICr7FvJch",
+    stripePriceId: priceIds.business,
     monthlyLimit: 2000,
     siteLimit: -1,
     price: 14900,
@@ -62,16 +81,23 @@ function wrangler(...args) {
   }
 }
 
-console.log("Seeding database...\n");
+console.log(`Seeding database (${isRemote ? "REMOTE/PRODUCTION" : "LOCAL"})...\n`);
+
+if (isRemote && priceIds.starter.includes("REPLACE")) {
+  console.error("ERROR: Please update PROD_PRICE_IDS in seed.mjs with your Stripe price IDs");
+  process.exit(1);
+}
+
+const locationFlag = isRemote ? "--remote" : "--local";
 
 for (const plan of plans) {
   const featuresJSON = escapeSQL(JSON.stringify(plan.features));
   const sql = `INSERT OR REPLACE INTO plans (id, name, stripe_price_id, monthly_limit, site_limit, price, features, created_at) VALUES ('${plan.id}', '${plan.name}', '${plan.stripePriceId}', ${plan.monthlyLimit}, ${plan.siteLimit}, ${plan.price}, '${featuresJSON}', unixepoch());`;
 
   console.log(`Seeding plan: ${plan.name}`);
-  wrangler("d1", "execute", DB_NAME, "--local", "--command", sql);
+  wrangler("d1", "execute", DB_NAME, locationFlag, "--command", sql);
 }
 
 console.log("\nSeeding complete!");
 console.log("\nVerifying plans:");
-wrangler("d1", "execute", DB_NAME, "--local", "--command", "SELECT id, name, price FROM plans;");
+wrangler("d1", "execute", DB_NAME, locationFlag, "--command", "SELECT id, name, price FROM plans;");
