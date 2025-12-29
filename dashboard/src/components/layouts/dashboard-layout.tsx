@@ -75,6 +75,11 @@ export function DashboardLayout() {
             <LogOut className="h-4 w-4" />
             Sign out
           </Button>
+          {import.meta.env.VITE_APP_VERSION && (
+            <div className="mt-2 text-xs text-muted-foreground/60">
+              v{import.meta.env.VITE_APP_VERSION}
+            </div>
+          )}
         </div>
       </aside>
 
