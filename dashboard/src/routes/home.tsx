@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
-import { CheckCircle, Shield, Zap } from "lucide-react";
+import { CheckCircle, Download, Shield, Zap } from "lucide-react";
 
 function MiraLogo({ className }: { className?: string }) {
   return (
@@ -65,12 +65,20 @@ export function HomePage() {
               Verify your content with multi-model AI consensus before publishing.
               Build trust with your readers through transparent, auditable verification.
             </p>
-            <div className="mt-10 flex justify-center gap-4">
-              <Button size="lg" className="bg-white text-slate-950 hover:bg-slate-100" asChild>
-                <Link to="/register">Get Started</Link>
-              </Button>
-              <Button size="lg" variant="ghost" className="border border-slate-600 text-white hover:bg-slate-800 hover:text-white" asChild>
-                <Link to="/pricing">View Pricing</Link>
+            <div className="mt-10 flex flex-col items-center gap-4">
+              <div className="flex justify-center gap-4">
+                <Button size="lg" className="bg-white text-slate-950 hover:bg-slate-100" asChild>
+                  <Link to="/register">Get Started</Link>
+                </Button>
+                <Button size="lg" variant="ghost" className="border border-slate-600 text-white hover:bg-slate-800 hover:text-white" asChild>
+                  <Link to="/pricing">View Pricing</Link>
+                </Button>
+              </div>
+              <Button size="lg" variant="ghost" className="text-slate-400 hover:text-white hover:bg-slate-800" asChild>
+                <a href="https://github.com/Aroha-Labs/verify-wordpress-plugin/releases/latest/download/mira-verify.zip">
+                  <Download className="mr-2 h-4 w-4" />
+                  Download WordPress Plugin
+                </a>
               </Button>
             </div>
           </div>
