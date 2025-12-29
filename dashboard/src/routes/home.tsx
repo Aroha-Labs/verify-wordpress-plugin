@@ -151,6 +151,9 @@ export function HomePage() {
             <a href="https://mira.network" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               mira.network
             </a>
+            {import.meta.env.VITE_APP_VERSION && (
+              <span className="text-muted-foreground/50">v{import.meta.env.VITE_APP_VERSION}</span>
+            )}
           </div>
         </div>
       </footer>
