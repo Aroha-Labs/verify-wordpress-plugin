@@ -43,6 +43,7 @@ jobs:
           VERSION=${{ steps.release.outputs.version }}
           sed -i "s/Version: .*/Version: ${VERSION}/" wordpress-plugin/mira-verify.php
           sed -i "s/define('MIRA_VERIFY_VERSION', '.*')/define('MIRA_VERIFY_VERSION', '${VERSION}')/" wordpress-plugin/mira-verify.php
+          sed -i "s/Stable tag: .*/Stable tag: ${VERSION}/" wordpress-plugin/readme.txt
 
       - name: Create plugin zip
         run: |
