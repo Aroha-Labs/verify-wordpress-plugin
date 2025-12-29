@@ -54,6 +54,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: api
-          command: deploy --minify
-        env:
-          APP_VERSION: ${{ steps.release.outputs.version }}
+          command: deploy --minify --var APP_VERSION:${{ steps.release.outputs.version }}

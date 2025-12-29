@@ -34,7 +34,11 @@ app.on(["POST", "GET"], "/v1/auth/*", (c) => {
 
 // Health check
 app.get("/v1/health", (c) => {
-  return c.json({ status: "ok", timestamp: new Date().toISOString() });
+  return c.json({
+    status: "ok",
+    version: c.env.APP_VERSION || "dev",
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // API routes

@@ -11,6 +11,7 @@ declare global {
     STRIPE_WEBHOOK_SECRET: string;
     MIRA_API_KEY: string;
     BETTER_AUTH_SECRET: string;
+    APP_VERSION?: string;
   }
 }
 
