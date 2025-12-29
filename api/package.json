@@ -1,0 +1,27 @@
+{
+	"name": "api",
+	"type": "module",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy --minify",
+		"cf-typegen": "wrangler types",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate:local": "wrangler d1 migrations apply mira-verify-db --local",
+		"db:migrate:remote": "wrangler d1 migrations apply mira-verify-db --remote",
+		"db:studio": "drizzle-kit studio",
+		"db:seed": "node scripts/seed.mjs"
+	},
+	"dependencies": {
+		"better-auth": "^1.4.9",
+		"drizzle-orm": "^0.45.1",
+		"hono": "^4.11.1",
+		"nanoid": "^5.1.6",
+		"stripe": "^20.1.0",
+		"zod": "^4.2.1"
+	},
+	"devDependencies": {
+		"@types/node": "^25.0.3",
+		"drizzle-kit": "^0.31.8",
+		"wrangler": "^4.56.0"
+	}
+}
