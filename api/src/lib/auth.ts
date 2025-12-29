@@ -28,15 +28,6 @@ export function createAuth(db: D1Database, appUrl: string, accessCode?: string) 
       expiresIn: 60 * 60 * 24 * 7,
       updateAge: 60 * 60 * 24,
     },
-    user: {
-      additionalFields: {
-        accessCode: {
-          type: "string",
-          required: false,
-          input: true,
-        },
-      },
-    },
     databaseHooks: {
       user: {
         create: {
