@@ -27,6 +27,7 @@ jobs:
         uses: groo-dev/record-release@v1
         with:
           token: ${{ secrets.GROO_PLUGIN_TOKEN }}
+          environment: production
           bump: ${{ inputs.bump || 'patch' }}
           release-prefix: plugin
           artifacts: mira-verify.zip

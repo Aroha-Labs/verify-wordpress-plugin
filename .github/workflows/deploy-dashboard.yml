@@ -44,6 +44,7 @@ jobs:
         uses: groo-dev/record-release@v1
         with:
           token: ${{ secrets.GROO_DASHBOARD_TOKEN }}
+          environment: production
           bump: ${{ github.event.inputs.bump || 'patch' }}
           release-prefix: dashboard
 
