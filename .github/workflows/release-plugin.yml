@@ -1,6 +1,12 @@
 name: Release Plugin
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'wordpress-plugin/**'
+      - '.github/workflows/release-plugin.yml'
   workflow_dispatch:
     inputs:
       bump:
