@@ -21,6 +21,7 @@ export function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [accessCode, setAccessCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +31,13 @@ export function RegisterPage() {
     setLoading(true);
 
     try {
-      const result = await signUp.email({ name, email, password });
+      const result = await signUp.email({
+        name,
+        email,
+        password,
+        // @ts-expect-error - accessCode is a custom field validated server-side
+        accessCode,
+      });
       if (result.error) {
         setError(result.error.message || "Failed to create account");
       } else {
@@ -93,6 +100,17 @@ export function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="accessCode">Access Code</Label>
+              <Input
+                id="accessCode"
+                type="text"
+                placeholder="Enter your access code"
+                value={accessCode}
+                onChange={(e) => setAccessCode(e.target.value)}
+                required
               />
             </div>
           </CardContent>
