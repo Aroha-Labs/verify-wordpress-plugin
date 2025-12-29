@@ -12,6 +12,7 @@ zip -r mira-verify.zip . \
   -x "*.sh" \
   -x "docker-compose.yml" \
   -x ".git/*" \
+  -x ".gitignore" \
   -x ".DS_Store" \
   -x "*.zip" \
   -x ".wordpress-org/*"
