@@ -12,6 +12,7 @@ declare global {
     MIRA_API_KEY: string;
     BETTER_AUTH_SECRET: string;
     APP_VERSION?: string;
+    GROO_PLUGIN_TOKEN?: string;
   }
 }
 

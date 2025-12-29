@@ -41,6 +41,32 @@ app.get("/v1/health", (c) => {
   });
 });
 
+// Download plugin - redirects to latest GitHub release
+app.get("/v1/download/plugin", async (c) => {
+  const grooToken = c.env.GROO_PLUGIN_TOKEN;
+  if (!grooToken) {
+    return c.json({ error: "Plugin download not configured" }, 503);
+  }
+
+  const response = await fetch(
+    "https://ops.groo.dev/v1/webhook/version?environment=production",
+    { headers: { Authorization: `Bearer ${grooToken}` } }
+  );
+
+  if (!response.ok) {
+    return c.json({ error: "Failed to fetch version" }, 502);
+  }
+
+  const data = await response.json() as { gitTag: string };
+  if (!data.gitTag) {
+    return c.json({ error: "No release found" }, 404);
+  }
+
+  return c.redirect(
+    `https://github.com/Aroha-Labs/verify-wordpress-plugin/releases/download/${data.gitTag}/mira-verify.zip`
+  );
+});
+
 // API routes
 app.route("/v1/subscriptions", subscriptionsRoute);
 app.route("/v1/verify", verifyRoute);

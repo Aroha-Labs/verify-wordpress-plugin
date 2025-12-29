@@ -75,7 +75,7 @@ export function HomePage() {
                 </Button>
               </div>
               <Button size="lg" variant="ghost" className="text-slate-400 hover:text-white hover:bg-slate-800" asChild>
-                <a href="https://github.com/Aroha-Labs/verify-wordpress-plugin/releases/latest/download/mira-verify.zip">
+                <a href={`${import.meta.env.VITE_API_URL}/download/plugin`}>
                   <Download className="mr-2 h-4 w-4" />
                   Download WordPress Plugin
                 </a>
