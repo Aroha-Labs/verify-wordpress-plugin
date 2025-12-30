@@ -1,0 +1,1 @@
+ALTER TABLE `sessions` ADD `token` text NOT NULL;

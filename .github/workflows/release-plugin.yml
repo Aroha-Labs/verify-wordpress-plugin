@@ -1,0 +1,58 @@
+name: Release Plugin
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'wordpress-plugin/**'
+      - '.github/workflows/release-plugin.yml'
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version bump type'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Release WordPress Plugin
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Record release
+        id: release
+        uses: groo-dev/record-release@v1
+        with:
+          token: ${{ secrets.GROO_PLUGIN_TOKEN }}
+          environment: production
+          bump: ${{ inputs.bump || 'patch' }}
+          release-prefix: plugin
+          artifacts: mira-verify.zip
+
+      - name: Update plugin version
+        run: |
+          VERSION=${{ steps.release.outputs.version }}
+          sed -i "s/Version: .*/Version: ${VERSION}/" wordpress-plugin/mira-verify.php
+          sed -i "s/define('MIRA_VERIFY_VERSION', '.*')/define('MIRA_VERIFY_VERSION', '${VERSION}')/" wordpress-plugin/mira-verify.php
+          sed -i "s/Stable tag: .*/Stable tag: ${VERSION}/" wordpress-plugin/readme.txt
+
+      - name: Create plugin zip
+        run: |
+          cd wordpress-plugin
+          zip -r ../mira-verify.zip . \
+            -x "*.sh" \
+            -x "docker-compose.yml" \
+            -x ".git/*" \
+            -x ".gitignore" \
+            -x ".DS_Store" \
+            -x "*.zip" \
+            -x ".wordpress-org/*"
