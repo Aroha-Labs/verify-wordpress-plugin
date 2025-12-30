@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware, APIError } from "better-auth/api";
+import { eq } from "drizzle-orm";
 import { createDb } from "../db";
 import * as schema from "../db/schema";
 
@@ -58,28 +59,44 @@ export function createAuth(config: AuthConfig) {
           const { accessCode: _, ...cleanBody } = body;
           return { context: { ...ctx, body: cleanBody } };
         }
-
-        // Domain restriction for Google OAuth
-        if (ctx.path === "/callback/google") {
-          const url = new URL(ctx.request?.url || "");
-          const error = url.searchParams.get("error");
-          if (error) return; // Let better-auth handle OAuth errors
-        }
       }),
-      after: createAuthMiddleware(async (ctx) => {
-        // Check domain after Google OAuth creates/finds user
-        if (ctx.path === "/callback/google" && ctx.context?.newUser) {
-          const user = ctx.context.newUser as { email?: string };
-          const email = user.email?.toLowerCase() || "";
-          const domain = email.split("@")[1];
+    },
+    databaseHooks: {
+      session: {
+        create: {
+          before: async (session) => {
+            // Check if this is a Google OAuth session by looking at the user's accounts
+            const userId = session.userId;
+            const userAccounts = await drizzle
+              .select()
+              .from(schema.accounts)
+              .where(eq(schema.accounts.userId, userId))
+              .all();
 
-          if (!ALLOWED_DOMAINS.includes(domain)) {
-            throw new APIError("FORBIDDEN", {
-              message: "Google sign-in is only available for internal users",
-            });
-          }
-        }
-      }),
+            const hasGoogleAccount = userAccounts.some(
+              (account) => account.providerId === "google"
+            );
+
+            if (hasGoogleAccount) {
+              // Get user email to validate domain
+              const user = await drizzle
+                .select()
+                .from(schema.users)
+                .where(eq(schema.users.id, userId))
+                .get();
+
+              const email = user?.email?.toLowerCase() || "";
+              const domain = email.split("@")[1];
+
+              if (!ALLOWED_DOMAINS.includes(domain)) {
+                throw new APIError("FORBIDDEN", {
+                  message: "Google sign-in is only available for @arohalabs.com and @mira.network emails",
+                });
+              }
+            }
+          },
+        },
+      },
     },
   });
 }
