@@ -90,6 +90,15 @@ export async function createPortalSession(): Promise<{ url: string }> {
   return data;
 }
 
+export async function syncSubscription(): Promise<{
+  synced: boolean;
+  hasActiveSubscription?: boolean;
+  message?: string;
+}> {
+  const { data } = await api.post("/subscriptions/sync");
+  return data;
+}
+
 export async function getSites(): Promise<Site[]> {
   const { data } = await api.get("/sites");
   return data;

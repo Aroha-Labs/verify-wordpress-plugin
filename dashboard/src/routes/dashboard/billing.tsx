@@ -1,13 +1,16 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
-import { getCurrentSubscription, getPlans, createCheckout, createPortalSession } from "@/lib/api";
+import { Check, RefreshCw } from "lucide-react";
+import { getCurrentSubscription, getPlans, createCheckout, createPortalSession, syncSubscription } from "@/lib/api";
 
 export function BillingPage() {
-  const { data: subscriptionData } = useQuery({
+  const queryClient = useQueryClient();
+
+  const { data: subscriptionData, isLoading: isLoadingSubscription } = useQuery({
     queryKey: ["subscription"],
     queryFn: getCurrentSubscription,
   });
@@ -35,8 +38,28 @@ export function BillingPage() {
     },
   });
 
+  const syncMutation = useMutation({
+    mutationFn: syncSubscription,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["subscription"] });
+    },
+  });
+
   const subscription = subscriptionData?.subscription;
   const currentPlan = subscriptionData?.plan;
+
+  // Auto-sync if user has stripeCustomerId but no active subscription
+  useEffect(() => {
+    if (
+      !isLoadingSubscription &&
+      subscription?.stripeCustomerId &&
+      subscription?.status !== "active" &&
+      !syncMutation.isPending &&
+      !syncMutation.isSuccess
+    ) {
+      syncMutation.mutate();
+    }
+  }, [isLoadingSubscription, subscription, syncMutation]);
 
   const handleUpgrade = (priceId: string) => {
     checkoutMutation.mutate(priceId);
@@ -68,12 +91,14 @@ export function BillingPage() {
       </p>
 
       {/* Current Plan */}
-      {subscription?.status === "active" && currentPlan && (
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Current Plan</CardTitle>
-            <CardDescription>Your active subscription details</CardDescription>
-          </CardHeader>
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle>Current Plan</CardTitle>
+          <CardDescription>
+            {subscription?.status === "active" ? "Your active subscription details" : "You don't have an active subscription"}
+          </CardDescription>
+        </CardHeader>
+        {subscription?.status === "active" && currentPlan ? (
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
@@ -95,13 +120,28 @@ export function BillingPage() {
               )}
             </div>
           </CardContent>
-          <CardFooter>
-            <Button onClick={handleManageBilling} disabled={portalMutation.isPending}>
-              {portalMutation.isPending ? "Loading..." : "Manage Billing"}
-            </Button>
-          </CardFooter>
-        </Card>
-      )}
+        ) : (
+          <CardContent>
+            <p className="text-muted-foreground">
+              Choose a plan below to get started with Mira Verify.
+            </p>
+          </CardContent>
+        )}
+        <CardFooter className="gap-2">
+          <Button onClick={handleManageBilling} disabled={portalMutation.isPending}>
+            {portalMutation.isPending ? "Loading..." : "Manage Subscription"}
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => syncMutation.mutate()}
+            disabled={syncMutation.isPending}
+            title="Sync with Stripe"
+          >
+            <RefreshCw className={`h-4 w-4 ${syncMutation.isPending ? "animate-spin" : ""}`} />
+          </Button>
+        </CardFooter>
+      </Card>
 
       {/* Plans */}
       <div className="mt-8">

@@ -15,7 +15,13 @@ const app = new Hono<AppEnv>();
 // Initialize db and auth on each request
 app.use("*", async (c, next) => {
   c.set("db", createDb(c.env.DB));
-  c.set("auth", createAuth(c.env.DB, c.env.APP_URL, c.env.ACCESS_CODE));
+  c.set("auth", createAuth({
+    db: c.env.DB,
+    appUrl: c.env.APP_URL,
+    accessCode: c.env.ACCESS_CODE,
+    googleClientId: c.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: c.env.GOOGLE_CLIENT_SECRET,
+  }));
   await next();
 });
 

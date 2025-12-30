@@ -82,6 +82,11 @@ app.post("/checkout", async (c) => {
     .where(eq(subscriptions.userId, userId))
     .get();
 
+  // Check if user already has an active subscription
+  if (subscription?.status === "active") {
+    return c.json({ error: "You already have an active subscription. Use the billing portal to manage it." }, 400);
+  }
+
   let customerId = subscription?.stripeCustomerId;
 
   // Create Stripe customer if needed
@@ -122,6 +127,63 @@ app.post("/checkout", async (c) => {
   });
 
   return c.json({ url: checkoutSession.url });
+});
+
+// Sync subscription from Stripe
+app.post("/sync", async (c) => {
+  const db = c.get("db");
+  const userId = requireUserId(c);
+  const stripe = createStripe(c.env.STRIPE_SECRET_KEY);
+
+  const subscription = await db
+    .select()
+    .from(subscriptions)
+    .where(eq(subscriptions.userId, userId))
+    .get();
+
+  if (!subscription?.stripeCustomerId) {
+    return c.json({ synced: false, message: "No Stripe customer found" });
+  }
+
+  // Fetch active subscriptions from Stripe
+  const stripeSubscriptions = await stripe.subscriptions.list({
+    customer: subscription.stripeCustomerId,
+    status: "active",
+    limit: 1,
+  });
+
+  const activeSubscription = stripeSubscriptions.data[0];
+  if (!activeSubscription) {
+    // No active subscription in Stripe, mark as inactive locally
+    await db
+      .update(subscriptions)
+      .set({ status: "inactive", updatedAt: new Date() })
+      .where(eq(subscriptions.userId, userId));
+    return c.json({ synced: true, hasActiveSubscription: false });
+  }
+
+  // Find matching plan
+  const priceId = activeSubscription.items.data[0]?.price.id;
+  const plan = await db
+    .select()
+    .from(plans)
+    .where(eq(plans.stripePriceId, priceId))
+    .get();
+
+  // Update local subscription
+  await db
+    .update(subscriptions)
+    .set({
+      stripeSubscriptionId: activeSubscription.id,
+      planId: plan?.id,
+      status: "active",
+      currentPeriodStart: new Date(activeSubscription.current_period_start * 1000),
+      currentPeriodEnd: new Date(activeSubscription.current_period_end * 1000),
+      updatedAt: new Date(),
+    })
+    .where(eq(subscriptions.userId, userId));
+
+  return c.json({ synced: true, hasActiveSubscription: true });
 });
 
 // Create billing portal session
