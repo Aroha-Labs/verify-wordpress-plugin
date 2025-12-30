@@ -1,0 +1,7 @@
+# Copy this file to .dev.vars and fill in your values
+# These are secrets used during local development
+
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_WEBHOOK_SECRET=whsec_xxx
+MIRA_API_KEY=mk_verify_xxx
+BETTER_AUTH_SECRET=your-random-secret-here

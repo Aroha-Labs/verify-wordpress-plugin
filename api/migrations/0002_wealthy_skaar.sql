@@ -1,0 +1,1 @@
+CREATE INDEX `verification_user_date_idx` ON `verification_history` (`user_id`,`created_at`);
