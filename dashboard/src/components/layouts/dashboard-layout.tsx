@@ -296,6 +296,18 @@ export function DashboardLayout() {
     enabled: !!session,
   });
 
+  // Derive subscription for use in sites query
+  const subscription = subscriptionData?.subscription;
+  const hasActiveSubscription = !!subscription && subscription.status === "active";
+
+  // Fetch sites (only if authenticated and has active subscription)
+  // This hook must be called unconditionally, but `enabled` controls when it actually runs
+  const { data: sites, isLoading: isLoadingSites } = useQuery({
+    queryKey: ["sites"],
+    queryFn: getSites,
+    enabled: hasActiveSubscription,
+  });
+
   const handleSignOut = async () => {
     await signOut();
     window.location.href = "/";
@@ -325,17 +337,9 @@ export function DashboardLayout() {
   }
 
   // Show subscription UI if no active subscription
-  const subscription = subscriptionData?.subscription;
-  if (!subscription || subscription.status !== "active") {
+  if (!hasActiveSubscription) {
     return <SubscriptionUI user={session.user} />;
   }
-
-  // Fetch sites (only if authenticated and has active subscription)
-  const { data: sites, isLoading: isLoadingSites } = useQuery({
-    queryKey: ["sites"],
-    queryFn: getSites,
-    enabled: !!subscription && subscription.status === "active",
-  });
 
   // Show loading state while checking sites
   if (isLoadingSites) {
