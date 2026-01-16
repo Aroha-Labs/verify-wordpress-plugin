@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Outlet, Link, useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useSession, signOut, signIn } from "@/lib/auth-client";
-import { getCurrentSubscription, getPlans, createCheckout } from "@/lib/api";
+import { getCurrentSubscription, getPlans, createCheckout, getSites } from "@/lib/api";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, FlaskConical, Globe, BarChart3, CreditCard, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -327,6 +328,27 @@ export function DashboardLayout() {
   const subscription = subscriptionData?.subscription;
   if (!subscription || subscription.status !== "active") {
     return <SubscriptionUI user={session.user} />;
+  }
+
+  // Fetch sites (only if authenticated and has active subscription)
+  const { data: sites, isLoading: isLoadingSites } = useQuery({
+    queryKey: ["sites"],
+    queryFn: getSites,
+    enabled: !!subscription && subscription.status === "active",
+  });
+
+  // Show loading state while checking sites
+  if (isLoadingSites) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  // Show onboarding if no sites connected
+  if (sites && sites.length === 0) {
+    return <OnboardingFlow user={session.user} />;
   }
 
   return (
