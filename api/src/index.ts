@@ -18,7 +18,6 @@ app.use("*", async (c, next) => {
   c.set("auth", createAuth({
     db: c.env.DB,
     appUrl: c.env.APP_URL,
-    accessCode: c.env.ACCESS_CODE,
     googleClientId: c.env.GOOGLE_CLIENT_ID,
     googleClientSecret: c.env.GOOGLE_CLIENT_SECRET,
   }));
