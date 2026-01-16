@@ -24,10 +24,10 @@ app.get("/oauth/authorize", async (c) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
   if (!session?.user) {
-    // Redirect to login with return URL (use APP_URL for public URL)
+    // Redirect to dashboard with return URL (use APP_URL for public URL)
     const returnPath = `/v1/wp/oauth/authorize?redirect_uri=${encodeURIComponent(redirectUri)}&site_url=${encodeURIComponent(siteUrl)}`;
     const returnUrl = encodeURIComponent(`${c.env.APP_URL}${returnPath}`);
-    return c.redirect(`${c.env.APP_URL}/login?return=${returnUrl}`);
+    return c.redirect(`${c.env.APP_URL}/dashboard?return=${returnUrl}`);
   }
 
   // Check subscription

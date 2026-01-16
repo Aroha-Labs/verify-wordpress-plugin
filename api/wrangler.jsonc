@@ -23,7 +23,7 @@
 		}
 	],
 	"vars": {
-		"APP_URL": "https://verify-wp.mira.network"
+		"APP_URL": "https://factpress.ai"
 	},
 	"dev": {
 		"port": 24601
