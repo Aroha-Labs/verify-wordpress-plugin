@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 import { Mail } from "lucide-react";
 
@@ -194,7 +193,7 @@ export function HomePage() {
               </p>
               <div className="mt-8">
                 <Link
-                  to="/register"
+                  to="/login"
                   className="inline-block hover:opacity-90 transition-opacity"
                   style={{
                     fontFamily: 'Inter, sans-serif',
@@ -414,7 +413,7 @@ export function HomePage() {
             </p>
             <div className="mt-8">
               <Link
-                to="/register"
+                to="/login"
                 className="inline-block hover:opacity-90 transition-opacity"
                 style={{
                   fontFamily: 'Inter, sans-serif',

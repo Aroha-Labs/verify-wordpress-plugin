@@ -9,7 +9,6 @@ import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 // Pages
 import { HomePage } from "@/routes/home";
 import { LoginPage } from "@/routes/login";
-import { RegisterPage } from "@/routes/register";
 import { DashboardPage } from "@/routes/dashboard/index";
 import { SitesPage } from "@/routes/dashboard/sites";
 import { UsagePage } from "@/routes/dashboard/usage";
@@ -36,12 +35,6 @@ const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/login",
   component: LoginPage,
-});
-
-const registerRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/register",
-  component: RegisterPage,
 });
 
 // Dashboard layout route (protected)
@@ -104,7 +97,6 @@ const verificationDetailRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
-  registerRoute,
   dashboardLayoutRoute.addChildren([
     dashboardRoute,
     playgroundRoute,
