@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 // Step components
 function Step1Download({ onNext }: { onNext: () => void }) {
@@ -16,9 +17,9 @@ function Step1Download({ onNext }: { onNext: () => void }) {
         <h1
           style={{
             fontFamily: "Geist, sans-serif",
-            fontWeight: 600,
+            fontWeight: 500,
             fontSize: "32px",
-            color: "#18181B",
+            color: "rgba(24, 24, 27, 1)",
             lineHeight: 1.2,
           }}
         >
@@ -32,8 +33,9 @@ function Step1Download({ onNext }: { onNext: () => void }) {
           className="mt-4"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "16px",
-            color: "#6B7280",
+            fontWeight: 500,
+            fontSize: "13px",
+            color: "rgba(24, 24, 27, 0.6)",
           }}
         >
           Download the plugin file, then we'll install it
@@ -45,15 +47,15 @@ function Step1Download({ onNext }: { onNext: () => void }) {
       <div className="mt-8 flex gap-3">
         <Button
           onClick={handleDownload}
-          variant="outline"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: "16px",
-            borderRadius: "8px",
-            height: "48px",
-            paddingLeft: "24px",
-            paddingRight: "24px",
+            fontWeight: 600,
+            fontSize: "14px",
+            backgroundColor: "rgba(24, 24, 27, 1)",
+            color: "white",
+            borderRadius: "50px",
+            padding: "8px 16px",
+            cursor: "pointer",
           }}
         >
           Download Plugin
@@ -62,17 +64,17 @@ function Step1Download({ onNext }: { onNext: () => void }) {
           onClick={onNext}
           style={{
             fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: "16px",
-            backgroundColor: "#18181B",
-            color: "white",
-            borderRadius: "8px",
-            height: "48px",
-            paddingLeft: "24px",
-            paddingRight: "24px",
+            fontWeight: 600,
+            fontSize: "14px",
+            backgroundColor: "transparent",
+            color: "rgba(24, 24, 27, 1)",
+            border: "2px solid rgba(24, 24, 27, 1)",
+            borderRadius: "50px",
+            padding: "8px 16px",
+            cursor: "pointer",
           }}
         >
-          I have the file &rarr;
+          I have the file <ArrowRight className="inline h-4 w-4 ml-1" />
         </Button>
       </div>
     </div>
@@ -89,15 +91,14 @@ function Step2Install({ onNext }: { onNext: () => void }) {
         rel="noopener noreferrer"
         className="underline"
       >
-        playground.wordpress.net
-      </a>{" "}
-      &nearr;
+        playground.wordpress.net <ArrowUpRight className="inline h-4 w-4" />
+      </a>
     </>,
     <>
       Go to <strong>Plugins</strong> on the left sidebar
     </>,
     <>
-      Click <strong>Add New Plugin</strong> &rarr; <strong>Upload Plugin</strong>
+      Click <strong>Add New Plugin</strong> <ArrowRight className="inline h-4 w-4" /> <strong>Upload Plugin</strong>
     </>,
     <>
       Choose <strong>factpress-plugin.zip</strong> from your device
@@ -113,9 +114,9 @@ function Step2Install({ onNext }: { onNext: () => void }) {
         <h1
           style={{
             fontFamily: "Geist, sans-serif",
-            fontWeight: 600,
-            fontSize: "32px",
-            color: "#18181B",
+            fontWeight: 500,
+            fontSize: "24px",
+            color: "rgba(24, 24, 27, 1)",
             lineHeight: 1.2,
           }}
         >
@@ -125,8 +126,9 @@ function Step2Install({ onNext }: { onNext: () => void }) {
           className="mt-4"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "16px",
-            color: "#6B7280",
+            fontWeight: 500,
+            fontSize: "13px",
+            color: "rgba(24, 24, 27, 0.6)",
           }}
         >
           We'll install FactPress in a free WordPress
@@ -134,20 +136,21 @@ function Step2Install({ onNext }: { onNext: () => void }) {
           environment. No hosting needed.
         </p>
 
-        <div className="mt-8 space-y-4">
+        <div style={{ marginTop: "36px", marginBottom: "36px", padding: "12px", display: "flex", flexDirection: "column", gap: "24px" }}>
           {steps.map((step, index) => (
-            <div key={index} className="flex items-start gap-3">
+            <div key={index} className="flex items-start" style={{ gap: "8px" }}>
               <span
-                className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white text-sm flex items-center justify-center"
-                style={{ fontFamily: "Inter, sans-serif", fontWeight: 500 }}
+                className="flex-shrink-0 bg-gray-900 text-white text-sm flex items-center justify-center"
+                style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, width: "24px", height: "24px", borderRadius: "100%" }}
               >
                 {index + 1}
               </span>
               <span
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "15px",
+                  fontSize: "12px",
                   color: "#18181B",
+                  paddingTop: "3px",
                 }}
               >
                 {step}
@@ -162,29 +165,29 @@ function Step2Install({ onNext }: { onNext: () => void }) {
           onClick={onNext}
           style={{
             fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: "16px",
-            backgroundColor: "#18181B",
+            fontWeight: 600,
+            fontSize: "14px",
+            backgroundColor: "rgba(24, 24, 27, 1)",
             color: "white",
-            borderRadius: "8px",
-            height: "48px",
-            paddingLeft: "24px",
-            paddingRight: "24px",
+            borderRadius: "50px",
+            padding: "8px 16px",
+            cursor: "pointer",
           }}
         >
-          I've activated it &rarr;
+          I've activated it <ArrowRight className="inline h-4 w-4 ml-1" />
         </Button>
         <Button
-          variant="outline"
           onClick={() => window.open("mailto:hello@factpress.ai", "_blank")}
           style={{
             fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: "16px",
-            borderRadius: "8px",
-            height: "48px",
-            paddingLeft: "24px",
-            paddingRight: "24px",
+            fontWeight: 600,
+            fontSize: "14px",
+            backgroundColor: "transparent",
+            color: "rgba(24, 24, 27, 1)",
+            border: "2px solid rgba(24, 24, 27, 1)",
+            borderRadius: "50px",
+            padding: "8px 16px",
+            cursor: "pointer",
           }}
         >
           Get Support
@@ -215,9 +218,9 @@ function Step3Connect({ onNext }: { onNext: () => void }) {
         <h1
           style={{
             fontFamily: "Geist, sans-serif",
-            fontWeight: 600,
-            fontSize: "32px",
-            color: "#18181B",
+            fontWeight: 500,
+            fontSize: "24px",
+            color: "rgba(24, 24, 27, 1)",
             lineHeight: 1.2,
           }}
         >
@@ -227,27 +230,29 @@ function Step3Connect({ onNext }: { onNext: () => void }) {
           className="mt-4"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "16px",
-            color: "#6B7280",
+            fontWeight: 500,
+            fontSize: "13px",
+            color: "rgba(24, 24, 27, 0.6)",
           }}
         >
           Last step, let's link your account.
         </p>
 
-        <div className="mt-8 space-y-4">
+        <div style={{ marginTop: "36px", marginBottom: "36px", padding: "12px", display: "flex", flexDirection: "column", gap: "24px" }}>
           {steps.map((step, index) => (
-            <div key={index} className="flex items-start gap-3">
+            <div key={index} className="flex items-start" style={{ gap: "8px" }}>
               <span
-                className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white text-sm flex items-center justify-center"
-                style={{ fontFamily: "Inter, sans-serif", fontWeight: 500 }}
+                className="flex-shrink-0 bg-gray-900 text-white text-sm flex items-center justify-center"
+                style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, width: "24px", height: "24px", borderRadius: "100%" }}
               >
                 {index + 1}
               </span>
               <span
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "15px",
+                  fontSize: "12px",
                   color: "#18181B",
+                  paddingTop: "3px",
                 }}
               >
                 {step}
@@ -262,29 +267,29 @@ function Step3Connect({ onNext }: { onNext: () => void }) {
           onClick={onNext}
           style={{
             fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: "16px",
-            backgroundColor: "#18181B",
+            fontWeight: 600,
+            fontSize: "14px",
+            backgroundColor: "rgba(24, 24, 27, 1)",
             color: "white",
-            borderRadius: "8px",
-            height: "48px",
-            paddingLeft: "24px",
-            paddingRight: "24px",
+            borderRadius: "50px",
+            padding: "8px 16px",
+            cursor: "pointer",
           }}
         >
-          I'm connected &rarr;
+          I'm connected <ArrowRight className="inline h-4 w-4 ml-1" />
         </Button>
         <Button
-          variant="outline"
           onClick={() => window.open("mailto:hello@factpress.ai", "_blank")}
           style={{
             fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: "16px",
-            borderRadius: "8px",
-            height: "48px",
-            paddingLeft: "24px",
-            paddingRight: "24px",
+            fontWeight: 600,
+            fontSize: "14px",
+            backgroundColor: "transparent",
+            color: "rgba(24, 24, 27, 1)",
+            border: "2px solid rgba(24, 24, 27, 1)",
+            borderRadius: "50px",
+            padding: "8px 16px",
+            cursor: "pointer",
           }}
         >
           Get Support
@@ -305,9 +310,9 @@ function Step4Complete() {
         <h1
           style={{
             fontFamily: "Geist, sans-serif",
-            fontWeight: 600,
-            fontSize: "32px",
-            color: "#18181B",
+            fontWeight: 500,
+            fontSize: "24px",
+            color: "rgba(24, 24, 27, 1)",
             lineHeight: 1.2,
           }}
         >
@@ -317,13 +322,12 @@ function Step4Complete() {
           className="mt-4"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "16px",
-            color: "#6B7280",
+            fontWeight: 500,
+            fontSize: "13px",
+            color: "rgba(24, 24, 27, 0.6)",
           }}
         >
-          FactPress is ready. Head to Posts and you'll find the
-          <br />
-          fact-checker in the right sidebar of the editor.
+          FactPress is ready. Head to Posts and you'll find the fact-checker in the right sidebar of the editor.
         </p>
       </div>
 
@@ -332,29 +336,29 @@ function Step4Complete() {
           onClick={handleGoToPosts}
           style={{
             fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: "16px",
-            backgroundColor: "#18181B",
+            fontWeight: 600,
+            fontSize: "14px",
+            backgroundColor: "rgba(24, 24, 27, 1)",
             color: "white",
-            borderRadius: "8px",
-            height: "48px",
-            paddingLeft: "24px",
-            paddingRight: "24px",
+            borderRadius: "50px",
+            padding: "8px 16px",
+            cursor: "pointer",
           }}
         >
-          Go to Posts &rarr;
+          Go to Posts <ArrowRight className="inline h-4 w-4 ml-1" />
         </Button>
         <Button
-          variant="outline"
           onClick={() => window.open("mailto:hello@factpress.ai", "_blank")}
           style={{
             fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: "16px",
-            borderRadius: "8px",
-            height: "48px",
-            paddingLeft: "24px",
-            paddingRight: "24px",
+            fontWeight: 600,
+            fontSize: "14px",
+            backgroundColor: "transparent",
+            color: "rgba(24, 24, 27, 1)",
+            border: "2px solid rgba(24, 24, 27, 1)",
+            borderRadius: "50px",
+            padding: "8px 16px",
+            cursor: "pointer",
           }}
         >
           Get Support
@@ -427,19 +431,30 @@ export function OnboardingFlow({ user }: OnboardingFlowProps) {
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-8 py-12">
         <div
-          className="w-full max-w-4xl flex gap-12"
-          style={{ minHeight: "450px" }}
+          className="w-full flex"
+          style={{
+            maxWidth: "700px",
+            backgroundColor: "#F7F7F7",
+            padding: "24px",
+            gap: "32px",
+          }}
         >
           {/* Left side - Content */}
           <div className="flex-1 flex flex-col">
             {/* Step indicator */}
-            <div className="mb-6">
+            <div style={{ marginBottom: "12px" }}>
               <span
-                className="inline-flex items-center px-3 py-1 rounded-full border border-gray-200 text-sm"
-                style={{ fontFamily: "Inter, sans-serif" }}
+                className="inline-flex items-center"
+                style={{
+                  background: "linear-gradient(138.21deg, #B2DCF4 44.48%, #DCF0FB 69.07%, #DBEEFC 100.98%)",
+                  padding: "6px 12px",
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 500,
+                  fontSize: "12px",
+                }}
               >
-                <span className="font-semibold text-gray-900">Step {step}</span>
-                <span className="text-gray-500 ml-1">of 4</span>
+                <span style={{ color: "#18181B" }}>Step {step}</span>
+                <span style={{ color: "rgba(24, 24, 27, 0.5)", marginLeft: "4px" }}>of 4</span>
               </span>
             </div>
 
@@ -451,11 +466,11 @@ export function OnboardingFlow({ user }: OnboardingFlowProps) {
           </div>
 
           {/* Right side - Image */}
-          <div className="w-[280px] flex-shrink-0">
+          <div className="flex-1">
             <img
               src={stepImages[step - 1]}
               alt={`Step ${step} illustration`}
-              className="w-full h-auto rounded-lg"
+              className="w-full h-full object-cover"
             />
           </div>
         </div>
