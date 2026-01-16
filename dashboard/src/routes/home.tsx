@@ -85,7 +85,7 @@ export function HomePage() {
                 Features
               </a>
               <a
-                href="mailto:hello@mira.network"
+                href="mailto:hello@factpress.ai"
                 className="hidden md:block hover:opacity-70 transition-opacity"
                 style={{
                   fontFamily: 'Geist, sans-serif',
@@ -459,7 +459,7 @@ export function HomePage() {
               contact
             </span>
             <a
-              href="mailto:hello@mira.network"
+              href="mailto:hello@factpress.ai"
               className="hover:opacity-70 transition-opacity"
               aria-label="Email us"
               style={{ color: '#000000' }}
