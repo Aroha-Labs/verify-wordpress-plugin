@@ -6,16 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { signIn } from "@/lib/auth-client";
 
-function MiraLogo({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M17.947 3.28332L21.9761 0.884766L32.1155 15.958L28.4941 18.13V23.1536H27.7694L17.947 8.53343V3.28332Z" fill="currentColor"/>
-      <path d="M9.393 7.7657L13.4221 5.36715L23.5615 20.4403L19.9401 22.6124V27.636H19.2153L9.393 13.0158V7.7657Z" fill="currentColor"/>
-      <path d="M0.884277 12.2457L4.91335 9.84715L15.0528 24.9203L11.4314 27.0924V32.116H10.7066L0.884277 17.4958V12.2457Z" fill="currentColor"/>
-    </svg>
-  );
-}
-
 export function LoginPage() {
   const navigate = useNavigate();
   const search = useSearch({ strict: false }) as { return?: string };
@@ -49,13 +39,12 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <title>Sign In - Mira Verify</title>
+    <div className="flex min-h-screen items-center justify-center bg-white">
+      <title>Sign In - FactPress</title>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <Link to="/" className="mb-4 flex items-center justify-center gap-2">
-            <MiraLogo className="h-8 w-8" />
-            <span className="text-2xl font-bold">Mira Verify</span>
+          <Link to="/" className="mb-4 flex justify-center">
+            <img src="/factpress-logo.svg" alt="FactPress" className="h-8" />
           </Link>
           <CardTitle>Welcome back</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>

@@ -10,7 +10,6 @@ import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 import { HomePage } from "@/routes/home";
 import { LoginPage } from "@/routes/login";
 import { RegisterPage } from "@/routes/register";
-import { PricingPage } from "@/routes/pricing";
 import { DashboardPage } from "@/routes/dashboard/index";
 import { SitesPage } from "@/routes/dashboard/sites";
 import { UsagePage } from "@/routes/dashboard/usage";
@@ -43,12 +42,6 @@ const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/register",
   component: RegisterPage,
-});
-
-const pricingRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/pricing",
-  component: PricingPage,
 });
 
 // Dashboard layout route (protected)
@@ -112,7 +105,6 @@ const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   registerRoute,
-  pricingRoute,
   dashboardLayoutRoute.addChildren([
     dashboardRoute,
     playgroundRoute,
