@@ -6,15 +6,9 @@ import { Button } from "@/components/ui/button";
 function Step1Download({ onNext }: { onNext: () => void }) {
   const downloadUrl = `${import.meta.env.VITE_API_URL}/download/plugin`;
 
-  // Auto-trigger download on mount
-  useState(() => {
-    const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.download = "factpress-plugin.zip";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
+  const handleDownload = () => {
+    window.open(downloadUrl, "_blank");
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -42,15 +36,28 @@ function Step1Download({ onNext }: { onNext: () => void }) {
             color: "#6B7280",
           }}
         >
-          Your download should start automatically.
+          Download the plugin file, then we'll install it
           <br />
-          Once it's ready, we'll install it in WordPress
-          <br />
-          Playground.
+          in WordPress Playground.
         </p>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 flex gap-3">
+        <Button
+          onClick={handleDownload}
+          variant="outline"
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 500,
+            fontSize: "16px",
+            borderRadius: "8px",
+            height: "48px",
+            paddingLeft: "24px",
+            paddingRight: "24px",
+          }}
+        >
+          Download Plugin
+        </Button>
         <Button
           onClick={onNext}
           style={{
@@ -67,15 +74,6 @@ function Step1Download({ onNext }: { onNext: () => void }) {
         >
           I have the file &rarr;
         </Button>
-        <p className="mt-4">
-          <a
-            href={downloadUrl}
-            className="text-sm text-gray-500 hover:text-gray-700 underline"
-            style={{ fontFamily: "Inter, sans-serif" }}
-          >
-            Download didn't start? Click here
-          </a>
-        </p>
       </div>
     </div>
   );
