@@ -7,6 +7,8 @@ import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 
 // Pages
 import { HomePage } from "@/routes/home";
+import { PrivacyPage } from "@/routes/privacy";
+import { TermsPage } from "@/routes/terms";
 import { DashboardPage } from "@/routes/dashboard/index";
 import { SitesPage } from "@/routes/dashboard/sites";
 import { UsagePage } from "@/routes/dashboard/usage";
@@ -27,6 +29,18 @@ const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: HomePage,
+});
+
+const privacyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/privacy",
+  component: PrivacyPage,
+});
+
+const termsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/terms",
+  component: TermsPage,
 });
 
 // Dashboard layout route (handles auth internally)
@@ -82,6 +96,8 @@ const verificationDetailRoute = createRoute({
 // Route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
+  privacyRoute,
+  termsRoute,
   dashboardLayoutRoute.addChildren([
     dashboardRoute,
     playgroundRoute,

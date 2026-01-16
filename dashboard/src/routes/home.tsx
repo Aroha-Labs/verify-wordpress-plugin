@@ -444,8 +444,34 @@ export function HomePage() {
         }}
       >
         <div className="mx-auto px-6 flex items-center justify-between" style={{ maxWidth: '1056px' }}>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-6">
             <img src="/powered-by-mira.svg" alt="Powered by Mira" className="h-5" />
+            <div className="flex items-center gap-4">
+              <Link
+                to="/privacy"
+                className="hover:opacity-70 transition-opacity"
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: 500,
+                  fontSize: '12px',
+                  color: '#6B7280',
+                }}
+              >
+                Privacy
+              </Link>
+              <Link
+                to="/terms"
+                className="hover:opacity-70 transition-opacity"
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: 500,
+                  fontSize: '12px',
+                  color: '#6B7280',
+                }}
+              >
+                Terms
+              </Link>
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <span
