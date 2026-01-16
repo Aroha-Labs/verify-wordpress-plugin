@@ -1,6 +1,5 @@
-import { createRouter, createRoute, createRootRoute, redirect } from "@tanstack/react-router";
+import { createRouter, createRoute, createRootRoute } from "@tanstack/react-router";
 import { QueryClient } from "@tanstack/react-query";
-import { authClient } from "@/lib/auth-client";
 
 // Layouts
 import { RootLayout } from "@/components/layouts/root-layout";
@@ -8,7 +7,6 @@ import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 
 // Pages
 import { HomePage } from "@/routes/home";
-import { LoginPage } from "@/routes/login";
 import { DashboardPage } from "@/routes/dashboard/index";
 import { SitesPage } from "@/routes/dashboard/sites";
 import { UsagePage } from "@/routes/dashboard/usage";
@@ -31,23 +29,11 @@ const indexRoute = createRoute({
   component: HomePage,
 });
 
-const loginRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/login",
-  component: LoginPage,
-});
-
-// Dashboard layout route (protected)
+// Dashboard layout route (handles auth internally)
 const dashboardLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "dashboard-layout",
   component: DashboardLayout,
-  beforeLoad: async () => {
-    const session = await authClient.getSession();
-    if (!session.data) {
-      throw redirect({ to: "/login" });
-    }
-  },
 });
 
 // Dashboard routes
@@ -96,7 +82,6 @@ const verificationDetailRoute = createRoute({
 // Route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
-  loginRoute,
   dashboardLayoutRoute.addChildren([
     dashboardRoute,
     playgroundRoute,

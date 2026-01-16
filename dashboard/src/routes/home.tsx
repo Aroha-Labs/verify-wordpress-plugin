@@ -114,7 +114,7 @@ export function HomePage() {
                 </Link>
               ) : (
                 <Link
-                  to="/login"
+                  to="/dashboard"
                   className="hover:opacity-70 transition-opacity"
                   style={{
                     fontFamily: 'Inter, sans-serif',
@@ -193,7 +193,7 @@ export function HomePage() {
               </p>
               <div className="mt-8">
                 <Link
-                  to="/login"
+                  to="/dashboard"
                   className="inline-block hover:opacity-90 transition-opacity"
                   style={{
                     fontFamily: 'Inter, sans-serif',
@@ -413,7 +413,7 @@ export function HomePage() {
             </p>
             <div className="mt-8">
               <Link
-                to="/login"
+                to="/dashboard"
                 className="inline-block hover:opacity-90 transition-opacity"
                 style={{
                   fontFamily: 'Inter, sans-serif',
