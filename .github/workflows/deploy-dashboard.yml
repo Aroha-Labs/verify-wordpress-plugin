@@ -51,7 +51,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_API_URL: https://verify-wp.mira.network/v1
+          VITE_API_URL: https://factpress.ai/v1
           VITE_APP_VERSION: ${{ steps.release.outputs.version }}
 
       - name: Deploy to Cloudflare Pages
