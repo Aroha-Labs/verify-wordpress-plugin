@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { Outlet, Link, useLocation } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useSession, signOut, signIn } from "@/lib/auth-client";
+import { getCurrentSubscription, getPlans, createCheckout } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, FlaskConical, Globe, BarChart3, CreditCard, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -151,9 +154,146 @@ function LoginUI() {
   );
 }
 
+function SubscriptionUI({ user }: { user: { name?: string | null; image?: string | null } }) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleContinueToPayment = async () => {
+    setIsLoading(true);
+    try {
+      const plans = await getPlans();
+      // Find the first plan (should be the $10/week plan)
+      const plan = plans[0];
+      if (plan?.stripePriceId) {
+        const { url } = await createCheckout(plan.stripePriceId);
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error("Failed to create checkout:", error);
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white relative overflow-hidden">
+      <title>Subscribe - FactPress</title>
+
+      {/* Header */}
+      <header
+        className="flex items-center justify-between px-6 py-4 relative z-10"
+        style={{ borderBottom: '1px solid #E8E8E8' }}
+      >
+        <Link to="/" className="flex items-center gap-2">
+          <img src="/FactPressLogo-black.svg" alt="" className="h-5" />
+          <span style={{ fontFamily: 'Geist, sans-serif', fontWeight: 500, fontSize: '18px' }}>
+            FactPress
+          </span>
+        </Link>
+        {/* User Avatar */}
+        <div
+          className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-white overflow-hidden"
+        >
+          {user.image ? (
+            <img src={user.image} alt={user.name || ''} className="w-full h-full object-cover" />
+          ) : (
+            <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '14px' }}>
+              {user.name?.charAt(0)?.toUpperCase() || 'U'}
+            </span>
+          )}
+        </div>
+      </header>
+
+      {/* Main Content - centered */}
+      <main className="flex-1 flex items-center justify-center relative z-10">
+        <div className="text-center px-4">
+          {/* Checkmark icon */}
+          <img
+            src="/FactPressLogo-black.svg"
+            alt=""
+            className="mx-auto mb-6"
+            style={{ height: '48px' }}
+          />
+
+          {/* Title */}
+          <h1
+            className="mb-2"
+            style={{
+              fontFamily: 'Geist, sans-serif',
+              fontWeight: 400,
+              fontSize: '28px',
+              color: '#18181B'
+            }}
+          >
+            Start at <strong style={{ fontWeight: 700 }}>$10/week</strong>
+          </h1>
+
+          {/* Subtitle */}
+          <p
+            className="mb-8"
+            style={{
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '16px',
+              color: '#6B7280'
+            }}
+          >
+            complete payment to continue
+          </p>
+
+          {/* Continue to Payment Button */}
+          <Button
+            onClick={handleContinueToPayment}
+            disabled={isLoading}
+            style={{
+              fontFamily: 'Inter, sans-serif',
+              fontWeight: 500,
+              fontSize: '16px',
+              backgroundColor: '#18181B',
+              color: 'white',
+              borderRadius: '8px',
+              width: '280px',
+              height: '48px'
+            }}
+          >
+            {isLoading ? "Loading..." : "Continue to Payment"}
+          </Button>
+        </div>
+      </main>
+
+      {/* Decorative pattern - bottom right */}
+      <div
+        className="absolute bottom-0 right-0 pointer-events-none"
+        style={{
+          width: '50%',
+          height: '50%',
+          backgroundImage: 'url(/hero-pattern.svg)',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'bottom right',
+          backgroundSize: 'contain',
+          opacity: 0.5,
+        }}
+      />
+
+      {/* Footer */}
+      <footer className="py-8 flex justify-center relative z-10">
+        <img
+          src="/powered-by-mira.svg"
+          alt="powered by mira"
+          style={{ opacity: 0.4 }}
+        />
+      </footer>
+    </div>
+  );
+}
+
 export function DashboardLayout() {
   const { data: session, isPending } = useSession();
   const location = useLocation();
+
+  // Fetch subscription status (only if authenticated)
+  const { data: subscriptionData, isLoading: isLoadingSubscription } = useQuery({
+    queryKey: ["subscription"],
+    queryFn: getCurrentSubscription,
+    enabled: !!session,
+  });
 
   const handleSignOut = async () => {
     await signOut();
@@ -172,6 +312,21 @@ export function DashboardLayout() {
   // Show login UI if not authenticated
   if (!session) {
     return <LoginUI />;
+  }
+
+  // Show loading state while checking subscription
+  if (isLoadingSubscription) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  // Show subscription UI if no active subscription
+  const subscription = subscriptionData?.subscription;
+  if (!subscription || subscription.status !== "active") {
+    return <SubscriptionUI user={session.user} />;
   }
 
   return (

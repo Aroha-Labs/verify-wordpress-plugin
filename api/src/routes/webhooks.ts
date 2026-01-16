@@ -66,31 +66,69 @@ app.post("/stripe", async (c) => {
 
     case "customer.subscription.updated": {
       const stripeSubscription = event.data.object as Stripe.Subscription;
-      const customerId = stripeSubscription.customer as string;
+      const subscriptionId = stripeSubscription.id;
       const priceId = stripeSubscription.items.data[0]?.price.id;
 
-      const plan = await db
+      // Map Stripe status to app status
+      const statusMap: Record<string, string> = {
+        active: "active",
+        trialing: "active",
+        past_due: "past_due",
+        unpaid: "past_due",
+        canceled: "canceled",
+        incomplete: "inactive",
+        incomplete_expired: "inactive",
+        paused: "inactive",
+      };
+      const appStatus = statusMap[stripeSubscription.status];
+      if (!appStatus) {
+        throw new Error(`[Webhook] subscription.updated: unknown Stripe status "${stripeSubscription.status}"`);
+      }
+
+      // Find subscription by stripeSubscriptionId
+      const existingSub = await db
+        .select()
+        .from(subscriptions)
+        .where(eq(subscriptions.stripeSubscriptionId, subscriptionId))
+        .get();
+
+      if (!existingSub) {
+        throw new Error(`[Webhook] subscription.updated: subscription not found for ${subscriptionId}`);
+      }
+
+      const plan = priceId ? await db
         .select()
         .from(plans)
         .where(eq(plans.stripePriceId, priceId))
-        .get();
+        .get() : null;
 
       await db
         .update(subscriptions)
         .set({
           planId: plan?.id,
-          status: stripeSubscription.status === "active" ? "active" : stripeSubscription.status,
+          status: appStatus,
           currentPeriodStart: new Date(stripeSubscription.current_period_start * 1000),
           currentPeriodEnd: new Date(stripeSubscription.current_period_end * 1000),
           updatedAt: new Date(),
         })
-        .where(eq(subscriptions.stripeCustomerId, customerId));
+        .where(eq(subscriptions.id, existingSub.id));
       break;
     }
 
     case "customer.subscription.deleted": {
       const stripeSubscription = event.data.object as Stripe.Subscription;
-      const customerId = stripeSubscription.customer as string;
+      const subscriptionId = stripeSubscription.id;
+
+      // Find subscription by stripeSubscriptionId
+      const existingSub = await db
+        .select()
+        .from(subscriptions)
+        .where(eq(subscriptions.stripeSubscriptionId, subscriptionId))
+        .get();
+
+      if (!existingSub) {
+        throw new Error(`[Webhook] subscription.deleted: subscription not found for ${subscriptionId}`);
+      }
 
       await db
         .update(subscriptions)
@@ -98,7 +136,7 @@ app.post("/stripe", async (c) => {
           status: "canceled",
           updatedAt: new Date(),
         })
-        .where(eq(subscriptions.stripeCustomerId, customerId));
+        .where(eq(subscriptions.id, existingSub.id));
       break;
     }
 
