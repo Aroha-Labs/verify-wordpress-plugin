@@ -43,10 +43,10 @@ export function DashboardPage() {
 
   return (
     <div>
-      <title>Dashboard - Mira Verify</title>
+      <title>Dashboard - FactPress</title>
       <h1 className="text-3xl font-bold">Dashboard</h1>
       <p className="mt-2 text-muted-foreground">
-        Welcome to your Mira Verify dashboard
+        Welcome to your FactPress dashboard
       </p>
 
       {/* Stats */}

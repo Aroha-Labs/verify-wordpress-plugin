@@ -7,17 +7,6 @@ import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, FlaskConical, Globe, BarChart3, CreditCard, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-function MiraLogo({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M17.947 3.28332L21.9761 0.884766L32.1155 15.958L28.4941 18.13V23.1536H27.7694L17.947 8.53343V3.28332Z" fill="currentColor"/>
-      <path d="M9.393 7.7657L13.4221 5.36715L23.5615 20.4403L19.9401 22.6124V27.636H19.2153L9.393 13.0158V7.7657Z" fill="currentColor"/>
-      <path d="M0.884277 12.2457L4.91335 9.84715L15.0528 24.9203L11.4314 27.0924V32.116H10.7066L0.884277 17.4958V12.2457Z" fill="currentColor"/>
-    </svg>
-  );
-}
-
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/dashboard/playground", label: "Playground", icon: FlaskConical },
@@ -416,10 +405,35 @@ export function DashboardLayout() {
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="w-64 border-r bg-card">
-        <div className="flex h-16 items-center border-b px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <MiraLogo className="h-6 w-6" />
-            <span className="text-lg font-semibold">Mira Verify</span>
+        <div className="flex items-center border-b px-6 py-4">
+          <Link to="/" className="flex items-center gap-3">
+            <img src="/FactPressLogo-black.svg" alt="" className="h-8" />
+            <div className="flex flex-col" style={{ gap: "2px" }}>
+              <span
+                style={{
+                  fontFamily: "Geist, sans-serif",
+                  fontWeight: 500,
+                  fontSize: "18px",
+                  color: "#18181B",
+                  lineHeight: 1,
+                }}
+              >
+                FactPress
+              </span>
+              <div className="flex items-center gap-1" style={{ opacity: 0.5 }}>
+                <span
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: 500,
+                    fontSize: "11px",
+                    color: "#18181B",
+                  }}
+                >
+                  powered by
+                </span>
+                <img src="/mira-logo-text.svg" alt="mira" style={{ height: "6px" }} />
+              </div>
+            </div>
           </Link>
         </div>
         <nav className="flex flex-col gap-1 p-4">

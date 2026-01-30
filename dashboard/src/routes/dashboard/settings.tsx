@@ -1,14 +1,21 @@
 import { useSession } from "@/lib/auth-client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Download } from "lucide-react";
 
 export function SettingsPage() {
   const { data: session } = useSession();
+  const downloadUrl = `${import.meta.env.VITE_API_URL}/download/plugin`;
+
+  const handleDownload = () => {
+    window.open(downloadUrl, "_blank");
+  };
 
   return (
     <div>
-      <title>Settings - Mira Verify</title>
+      <title>Settings - FactPress</title>
       <h1 className="text-3xl font-bold">Settings</h1>
       <p className="mt-2 text-muted-foreground">
         Manage your account settings
@@ -38,12 +45,13 @@ export function SettingsPage() {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
-            Download the Mira Verify WordPress plugin to connect your sites and start
+            Download the FactPress WordPress plugin to connect your sites and start
             verifying content.
           </p>
-          <p className="mt-4 text-sm text-muted-foreground">
-            Plugin download will be available soon.
-          </p>
+          <Button onClick={handleDownload} className="mt-4">
+            <Download className="mr-2 h-4 w-4" />
+            Download Plugin
+          </Button>
         </CardContent>
       </Card>
     </div>

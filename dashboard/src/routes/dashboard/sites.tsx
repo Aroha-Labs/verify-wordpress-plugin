@@ -36,12 +36,12 @@ export function SitesPage() {
 
   return (
     <div>
-      <title>Sites - Mira Verify</title>
+      <title>Sites - FactPress</title>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Connected Sites</h1>
           <p className="mt-2 text-muted-foreground">
-            Manage your WordPress sites connected to Mira Verify
+            Manage your WordPress sites connected to FactPress
           </p>
         </div>
       </div>
@@ -113,7 +113,7 @@ export function SitesPage() {
               <Globe className="mx-auto h-12 w-12 text-muted-foreground" />
               <h3 className="mt-4 text-lg font-medium">No sites connected</h3>
               <p className="mt-2 text-muted-foreground">
-                Install the Mira Verify plugin on your WordPress site and connect it here
+                Install the FactPress plugin on your WordPress site and connect it here
               </p>
             </div>
           )}
@@ -133,7 +133,7 @@ export function SitesPage() {
             <div>
               <p className="font-medium">Install the Plugin</p>
               <p className="text-sm text-muted-foreground">
-                Download and install the Mira Verify plugin on your WordPress site
+                Download and install the FactPress plugin on your WordPress site
               </p>
             </div>
           </div>
@@ -144,7 +144,7 @@ export function SitesPage() {
             <div>
               <p className="font-medium">Connect Your Account</p>
               <p className="text-sm text-muted-foreground">
-                Go to Settings → Mira Verify and click "Connect to Mira Verify"
+                Go to Settings → FactPress and click "Connect to FactPress"
               </p>
             </div>
           </div>

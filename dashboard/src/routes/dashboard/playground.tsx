@@ -147,7 +147,7 @@ export function PlaygroundPage() {
 
   return (
     <div>
-      <title>Playground - Mira Verify</title>
+      <title>Playground - FactPress</title>
       <h1 className="text-3xl font-bold">Playground</h1>
       <p className="mt-2 text-muted-foreground">
         Test content verification manually

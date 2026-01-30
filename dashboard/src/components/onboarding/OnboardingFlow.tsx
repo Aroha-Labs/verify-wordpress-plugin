@@ -228,7 +228,7 @@ function Step3Connect({ onNext }: { onNext: (site: Site) => void }) {
       <strong className="text-blue-600">factpress.ai</strong>
     </>,
     <>
-      Click <strong>Connect to Mira Verify</strong>
+      Click <strong>Connect to FactPress</strong>
     </>,
   ];
 

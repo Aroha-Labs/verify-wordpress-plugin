@@ -119,7 +119,7 @@ export function VerificationDetailPage() {
 
   return (
     <div>
-      <title>Verification Details - Mira Verify</title>
+      <title>Verification Details - FactPress</title>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <Link to="/dashboard/usage">

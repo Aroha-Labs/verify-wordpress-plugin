@@ -101,7 +101,7 @@ export function UsagePage() {
 
   return (
     <div>
-      <title>Verification History - Mira Verify</title>
+      <title>Verification History - FactPress</title>
       <h1 className="text-3xl font-bold">Verification History</h1>
       <p className="mt-2 text-muted-foreground">
         View all your content verifications
