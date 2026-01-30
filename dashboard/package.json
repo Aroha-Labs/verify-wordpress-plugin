@@ -1,7 +1,7 @@
 {
-  "name": "mira-verify-dashboard",
+  "name": "factpress-dashboard",
   "version": "0.0.0",
-  "description": "Mira Verify Dashboard - User portal for AI-powered content verification",
+  "description": "FactPress Dashboard - User portal for AI-powered fact-checking",
   "license": "GPL-2.0-or-later",
   "author": "Mira Network",
   "repository": {
@@ -12,7 +12,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

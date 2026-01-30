@@ -1,7 +1,7 @@
 {
-	"name": "mira-verify-api",
+	"name": "factpress-api",
 	"version": "0.0.0",
-	"description": "Mira Verify API - Backend for AI-powered content verification",
+	"description": "FactPress API - Backend for AI-powered fact-checking",
 	"license": "GPL-2.0-or-later",
 	"author": "Mira Network",
 	"repository": {
