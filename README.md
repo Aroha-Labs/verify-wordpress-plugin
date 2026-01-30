@@ -1,12 +1,12 @@
-# Mira Verify
+# FactPress
 
 [![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 
-AI-powered fact verification for WordPress using multi-model consensus.
+AI-powered fact-checking for WordPress using multi-model consensus verification.
 
 ## Overview
 
-Mira Verify brings AI-powered fact-checking directly to the WordPress editor. Using multi-model consensus verification, it analyzes claims in your content and provides transparent, auditable verification results.
+FactPress brings AI-powered fact-checking directly to the WordPress editor. Using multi-model consensus verification, it analyzes claims in your content and provides transparent, auditable verification results.
 
 ### Key Features
 
@@ -37,23 +37,23 @@ This monorepo contains three components:
 ### WordPress Plugin
 
 1. Download the latest release from [GitHub Releases](https://github.com/Aroha-Labs/verify-wordpress-plugin/releases)
-2. Upload the `mira-verify` folder to `/wp-content/plugins/`
+2. Upload the `factpress` folder to `/wp-content/plugins/`
 3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Go to **Settings > Mira Verify**
-5. Click "Connect to Mira Verify" to link your account
+4. Go to **Settings > FactPress**
+5. Click "Connect to FactPress" to link your account
 
-Or download directly: [verify-wp.mira.network/v1/download/plugin](https://verify-wp.mira.network/v1/download/plugin)
+Or download directly: [factpress.ai/v1/download/plugin](https://factpress.ai/v1/download/plugin)
 
 ### Requirements
 
 - WordPress 5.8+
 - PHP 7.4+
-- A Mira Verify subscription ([pricing](https://verify-wp.mira.network/pricing))
+- A FactPress subscription ([pricing](https://factpress.ai/#pricing))
 
 ## Live Services
 
-- **Dashboard**: [verify-wp.mira.network](https://verify-wp.mira.network)
-- **API**: verify-wp.mira.network/v1
+- **Dashboard**: [factpress.ai](https://factpress.ai)
+- **API**: factpress.ai/v1
 
 ## Development
 
@@ -77,7 +77,7 @@ npm run dev
 
 ### WordPress Plugin
 
-The plugin can be tested in any local WordPress installation. Copy the `wordpress-plugin` folder to `wp-content/plugins/mira-verify`.
+The plugin can be tested in any local WordPress installation. Copy the `wordpress-plugin` folder to `wp-content/plugins/factpress`.
 
 ## Contributing
 
@@ -89,6 +89,6 @@ This project is licensed under the GNU General Public License v2.0 or later - se
 
 ## Links
 
-- [Create Account](https://verify-wp.mira.network/register)
-- [View Pricing](https://verify-wp.mira.network/pricing)
+- [Get Started](https://factpress.ai/dashboard)
+- [View Pricing](https://factpress.ai/#pricing)
 - [Report Issues](https://github.com/Aroha-Labs/verify-wordpress-plugin/issues)
