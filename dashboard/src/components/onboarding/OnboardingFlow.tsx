@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { getSites, type Site } from "@/lib/api";
 
 // Step components
 function Step1Download({ onNext }: { onNext: () => void }) {
@@ -197,7 +199,25 @@ function Step2Install({ onNext }: { onNext: () => void }) {
   );
 }
 
-function Step3Connect({ onNext }: { onNext: () => void }) {
+function Step3Connect({ onNext }: { onNext: (site: Site) => void }) {
+  const [error, setError] = useState<string | null>(null);
+
+  const { refetch, isFetching } = useQuery({
+    queryKey: ["sites-check"],
+    queryFn: getSites,
+    enabled: false, // Only fetch when button is clicked
+  });
+
+  const handleCheckConnection = async () => {
+    setError(null);
+    const result = await refetch();
+    if (result.data && result.data.length > 0) {
+      onNext(result.data[0]);
+    } else {
+      setError("No site connected yet. Please complete the connection steps above.");
+    }
+  };
+
   const steps = [
     <>
       Go to <strong>Settings</strong> &rarr; <strong>FactPress</strong>
@@ -260,11 +280,25 @@ function Step3Connect({ onNext }: { onNext: () => void }) {
             </div>
           ))}
         </div>
+
+        {error && (
+          <p
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 500,
+              fontSize: "13px",
+              color: "#DC2626",
+            }}
+          >
+            {error}
+          </p>
+        )}
       </div>
 
       <div className="mt-8 flex gap-3">
         <Button
-          onClick={onNext}
+          onClick={handleCheckConnection}
+          disabled={isFetching}
           style={{
             fontFamily: "Inter, sans-serif",
             fontWeight: 600,
@@ -273,10 +307,11 @@ function Step3Connect({ onNext }: { onNext: () => void }) {
             color: "white",
             borderRadius: "50px",
             padding: "8px 16px",
-            cursor: "pointer",
+            cursor: isFetching ? "wait" : "pointer",
+            opacity: isFetching ? 0.7 : 1,
           }}
         >
-          I'm connected <ArrowRight className="inline h-4 w-4 ml-1" />
+          {isFetching ? "Checking..." : <>I'm connected <ArrowRight className="inline h-4 w-4 ml-1" /></>}
         </Button>
         <Button
           onClick={() => window.open("mailto:hello@factpress.ai", "_blank")}
@@ -299,9 +334,11 @@ function Step3Connect({ onNext }: { onNext: () => void }) {
   );
 }
 
-function Step4Complete() {
+function Step4Complete({ site }: { site: Site }) {
   const handleGoToPosts = () => {
-    window.open("https://playground.wordpress.net/wp-admin/edit.php", "_blank");
+    const domain = site.domain;
+    const url = domain.startsWith("http") ? domain : `https://${domain}`;
+    window.open(`${url}/wp-admin/edit.php`, "_blank");
   };
 
   return (
@@ -382,8 +419,14 @@ interface OnboardingFlowProps {
 
 export function OnboardingFlow({ user }: OnboardingFlowProps) {
   const [step, setStep] = useState(1);
+  const [connectedSite, setConnectedSite] = useState<Site | null>(null);
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 4));
+
+  const handleSiteConnected = (site: Site) => {
+    setConnectedSite(site);
+    setStep(4);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -461,8 +504,8 @@ export function OnboardingFlow({ user }: OnboardingFlowProps) {
             {/* Step content */}
             {step === 1 && <Step1Download onNext={nextStep} />}
             {step === 2 && <Step2Install onNext={nextStep} />}
-            {step === 3 && <Step3Connect onNext={nextStep} />}
-            {step === 4 && <Step4Complete />}
+            {step === 3 && <Step3Connect onNext={handleSiteConnected} />}
+            {step === 4 && connectedSite && <Step4Complete site={connectedSite} />}
           </div>
 
           {/* Right side - Image */}

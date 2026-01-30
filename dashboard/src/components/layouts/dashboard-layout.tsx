@@ -27,7 +27,15 @@ const navItems = [
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
-function LoginUI() {
+function LoginUI({ returnUrl }: { returnUrl?: string | null }) {
+  const handleSignIn = () => {
+    // Save return URL to sessionStorage so it persists through Google OAuth
+    if (returnUrl) {
+      sessionStorage.setItem("oauth_return_url", returnUrl);
+    }
+    signIn.social({ provider: "google" });
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <title>Get Started - FactPress</title>
@@ -96,7 +104,7 @@ function LoginUI() {
 
           {/* Google Sign In Button */}
           <Button
-            onClick={() => signIn.social({ provider: "google" })}
+            onClick={handleSignIn}
             className="mb-4"
             style={{
               fontFamily: 'Inter, sans-serif',
@@ -355,7 +363,8 @@ export function DashboardLayout() {
 
   // Show login UI if not authenticated
   if (!session) {
-    return <LoginUI />;
+    const returnUrl = new URLSearchParams(location.search).get("return");
+    return <LoginUI returnUrl={returnUrl} />;
   }
 
   // Show loading state while checking subscription
@@ -374,6 +383,23 @@ export function DashboardLayout() {
 
   // Show loading state while checking sites
   if (isLoadingSites) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  // Check for OAuth return URL - if present, redirect to complete the OAuth flow
+  // Check both URL params (direct access) and sessionStorage (after Google OAuth login)
+  const returnUrlFromParams = new URLSearchParams(location.search).get("return");
+  const returnUrlFromStorage = sessionStorage.getItem("oauth_return_url");
+  const returnUrl = returnUrlFromParams || returnUrlFromStorage;
+
+  if (returnUrl) {
+    // Clear from sessionStorage to prevent redirect loops
+    sessionStorage.removeItem("oauth_return_url");
+    window.location.href = decodeURIComponent(returnUrl);
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
