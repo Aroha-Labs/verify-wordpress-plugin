@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Mira Verify
- * Plugin URI: https://verify-wp.mira.network
- * Description: Verify your content with AI-powered fact checking using multi-model consensus.
+ * Plugin Name: FactPress
+ * Plugin URI: https://factpress.ai
+ * Description: AI-powered fact-checking for WordPress using multi-model consensus verification.
  * Version: 1.0.1
  * Requires at least: 5.8
  * Requires PHP: 7.4
@@ -62,8 +62,8 @@ class Mira_Verify {
 
     public function add_admin_menu() {
         add_options_page(
-            __('Mira Verify', 'mira-verify'),
-            __('Mira Verify', 'mira-verify'),
+            __('FactPress', 'mira-verify'),
+            __('FactPress', 'mira-verify'),
             'manage_options',
             'mira-verify',
             array('Mira_Verify_Settings', 'render_settings_page')

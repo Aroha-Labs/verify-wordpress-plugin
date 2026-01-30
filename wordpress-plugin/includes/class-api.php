@@ -1,6 +1,6 @@
 <?php
 /**
- * API handler for Mira Verify
+ * API handler for FactPress
  */
 
 if (!defined('ABSPATH')) {
@@ -20,7 +20,7 @@ class Mira_Verify_API {
         $access_token = Mira_Verify_OAuth::get_access_token();
 
         if (empty($access_token)) {
-            return new WP_Error('not_connected', __('Not connected to Mira Verify.', 'mira-verify'));
+            return new WP_Error('not_connected', __('Not connected to FactPress.', 'mira-verify'));
         }
 
         $api_url = Mira_Verify::get_api_url();
@@ -106,7 +106,7 @@ class Mira_Verify_API {
         $access_token = Mira_Verify_OAuth::get_access_token();
 
         if (empty($access_token)) {
-            self::send_sse_error(__('Not connected to Mira Verify.', 'mira-verify'));
+            self::send_sse_error(__('Not connected to FactPress.', 'mira-verify'));
             return;
         }
 

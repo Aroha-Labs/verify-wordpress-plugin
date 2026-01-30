@@ -1,6 +1,6 @@
 <?php
 /**
- * Settings page for Mira Verify
+ * Settings page for FactPress
  */
 
 if (!defined('ABSPATH')) {
@@ -39,7 +39,7 @@ class Mira_Verify_Settings {
      * Render section description
      */
     public static function render_section_description() {
-        echo '<p>' . esc_html__('Configure your Mira Verify connection.', 'mira-verify') . '</p>';
+        echo '<p>' . esc_html__('Configure your FactPress connection.', 'mira-verify') . '</p>';
     }
 
     /**
@@ -54,10 +54,10 @@ class Mira_Verify_Settings {
             name="mira_verify_api_url"
             value="<?php echo esc_attr($api_url); ?>"
             class="regular-text"
-            placeholder="https://verify.miranet.work"
+            placeholder="https://factpress.ai"
         />
         <p class="description">
-            <?php esc_html_e('Your Mira Verify service URL (e.g., https://verify.miranet.work)', 'mira-verify'); ?>
+            <?php esc_html_e('Your FactPress service URL (e.g., https://factpress.ai)', 'mira-verify'); ?>
         </p>
         <?php
     }
@@ -78,7 +78,7 @@ class Mira_Verify_Settings {
             add_settings_error(
                 'mira_verify',
                 'connected',
-                __('Successfully connected to Mira Verify!', 'mira-verify'),
+                __('Successfully connected to FactPress!', 'mira-verify'),
                 'success'
             );
         }
@@ -95,7 +95,7 @@ class Mira_Verify_Settings {
                 <!-- Configuration Required -->
                 <div class="mira-verify-card">
                     <h2><?php esc_html_e('Setup Required', 'mira-verify'); ?></h2>
-                    <p><?php esc_html_e('Please configure your Mira Verify service URL to get started.', 'mira-verify'); ?></p>
+                    <p><?php esc_html_e('Please configure your FactPress service URL to get started.', 'mira-verify'); ?></p>
 
                     <form method="post" action="options.php">
                         <?php
@@ -109,12 +109,12 @@ class Mira_Verify_Settings {
             <?php elseif (!$is_connected): ?>
                 <!-- Not Connected -->
                 <div class="mira-verify-card">
-                    <h2><?php esc_html_e('Connect to Mira Verify', 'mira-verify'); ?></h2>
-                    <p><?php esc_html_e('Connect your WordPress site to your Mira Verify account to start verifying content.', 'mira-verify'); ?></p>
+                    <h2><?php esc_html_e('Connect to FactPress', 'mira-verify'); ?></h2>
+                    <p><?php esc_html_e('Connect your WordPress site to your FactPress account to start verifying content.', 'mira-verify'); ?></p>
 
                     <p>
                         <a href="<?php echo esc_url(Mira_Verify_OAuth::get_authorize_url()); ?>" class="button button-primary button-hero">
-                            <?php esc_html_e('Connect to Mira Verify', 'mira-verify'); ?>
+                            <?php esc_html_e('Connect to FactPress', 'mira-verify'); ?>
                         </a>
                     </p>
                 </div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * OAuth handler for Mira Verify
+ * OAuth handler for FactPress
  */
 
 if (!defined('ABSPATH')) {
@@ -90,7 +90,7 @@ class Mira_Verify_OAuth {
         add_settings_error(
             'mira_verify',
             'oauth_success',
-            __('Successfully connected to Mira Verify!', 'mira-verify'),
+            __('Successfully connected to FactPress!', 'mira-verify'),
             'success'
         );
 
@@ -189,7 +189,7 @@ class Mira_Verify_OAuth {
     }
 
     /**
-     * Disconnect from Mira Verify
+     * Disconnect from FactPress
      */
     public static function disconnect() {
         $access_token = self::get_access_token();

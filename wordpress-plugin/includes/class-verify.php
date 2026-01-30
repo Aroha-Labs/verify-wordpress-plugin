@@ -1,6 +1,6 @@
 <?php
 /**
- * Verification result handler for Mira Verify
+ * Verification result handler for FactPress
  */
 
 if (!defined('ABSPATH')) {

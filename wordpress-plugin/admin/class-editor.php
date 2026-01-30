@@ -1,6 +1,6 @@
 <?php
 /**
- * Editor integration for Mira Verify
+ * Editor integration for FactPress
  */
 
 if (!defined('ABSPATH')) {
