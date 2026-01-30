@@ -10,6 +10,11 @@ Thumbs.db
 
 # Claude Code
 .claude/
+.groo/
+
+# Design files
+design/
+trash/
 
 # Environment files (root level)
 .env
