@@ -121,8 +121,8 @@ app.post("/checkout", async (c) => {
     customer: customerId,
     mode: "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${c.env.APP_URL}/dashboard/billing?success=true`,
-    cancel_url: `${c.env.APP_URL}/dashboard/billing?canceled=true`,
+    success_url: `${c.env.APP_URL}/dashboard`,
+    cancel_url: `${c.env.APP_URL}/dashboard?canceled=true`,
     metadata: { userId },
   });
 

@@ -157,6 +157,8 @@ function LoginUI() {
 
 function SubscriptionUI({ user }: { user: { name?: string | null; image?: string | null } }) {
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const isCanceled = new URLSearchParams(location.search).get("canceled") === "true";
 
   const handleContinueToPayment = async () => {
     setIsLoading(true);
@@ -175,106 +177,135 @@ function SubscriptionUI({ user }: { user: { name?: string | null; image?: string
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-white">
       <title>Subscribe - FactPress</title>
 
       {/* Header */}
       <header
-        className="flex items-center justify-between px-6 py-4 relative z-10"
-        style={{ borderBottom: '1px solid #E8E8E8' }}
+        className="flex items-center justify-between px-6 py-4"
+        style={{ borderBottom: "1px solid #E8E8E8" }}
       >
         <Link to="/" className="flex items-center gap-2">
           <img src="/FactPressLogo-black.svg" alt="" className="h-5" />
-          <span style={{ fontFamily: 'Geist, sans-serif', fontWeight: 500, fontSize: '18px' }}>
+          <span
+            style={{
+              fontFamily: "Geist, sans-serif",
+              fontWeight: 500,
+              fontSize: "18px",
+            }}
+          >
             FactPress
           </span>
         </Link>
         {/* User Avatar */}
-        <div
-          className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-white overflow-hidden"
-        >
+        <div className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-white overflow-hidden">
           {user.image ? (
-            <img src={user.image} alt={user.name || ''} className="w-full h-full object-cover" />
+            <img
+              src={user.image}
+              alt={user.name || ""}
+              className="w-full h-full object-cover"
+            />
           ) : (
-            <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '14px' }}>
-              {user.name?.charAt(0)?.toUpperCase() || 'U'}
+            <span
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 500,
+                fontSize: "14px",
+              }}
+            >
+              {user.name?.charAt(0)?.toUpperCase() || "U"}
             </span>
           )}
         </div>
       </header>
 
-      {/* Main Content - centered */}
-      <main className="flex-1 flex items-center justify-center relative z-10">
-        <div className="text-center px-4">
-          {/* Checkmark icon */}
-          <img
-            src="/FactPressLogo-black.svg"
-            alt=""
-            className="mx-auto mb-6"
-            style={{ height: '48px' }}
-          />
+      {/* Main Content */}
+      <main className="flex-1 flex items-center justify-center px-8 py-12">
+        <div
+          className="w-full flex"
+          style={{
+            maxWidth: "700px",
+            backgroundColor: "#F7F7F7",
+            padding: "24px",
+            gap: "32px",
+          }}
+        >
+          {/* Left side - Content */}
+          <div className="flex-1 flex flex-col">
+            <h1
+              style={{
+                fontFamily: "Geist, sans-serif",
+                fontWeight: 500,
+                fontSize: "32px",
+                color: "rgba(24, 24, 27, 1)",
+                lineHeight: 1.2,
+              }}
+            >
+              Start verifying at
+              <br />
+              $10/week
+            </h1>
+            <p
+              className="mt-4"
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 500,
+                fontSize: "13px",
+                color: "rgba(24, 24, 27, 0.6)",
+              }}
+            >
+              Complete payment to download the plugin
+              <br />
+              and start verifying up to 100 facts per week.
+            </p>
 
-          {/* Title */}
-          <h1
-            className="mb-2"
-            style={{
-              fontFamily: 'Geist, sans-serif',
-              fontWeight: 400,
-              fontSize: '28px',
-              color: '#18181B'
-            }}
-          >
-            Start at <strong style={{ fontWeight: 700 }}>$10/week</strong>
-          </h1>
+            {isCanceled && (
+              <p
+                className="mt-4"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 500,
+                  fontSize: "13px",
+                  color: "#DC2626",
+                }}
+              >
+                Payment was cancelled. Please try again.
+              </p>
+            )}
 
-          {/* Subtitle */}
-          <p
-            className="mb-8"
-            style={{
-              fontFamily: 'Inter, sans-serif',
-              fontSize: '16px',
-              color: '#6B7280'
-            }}
-          >
-            complete payment to continue
-          </p>
+            <div className="mt-auto pt-8">
+              <Button
+                onClick={handleContinueToPayment}
+                disabled={isLoading}
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  backgroundColor: "rgba(24, 24, 27, 1)",
+                  color: "white",
+                  borderRadius: "50px",
+                  padding: "8px 16px",
+                  cursor: "pointer",
+                }}
+              >
+                {isLoading ? "Loading..." : "Complete Payment"}
+              </Button>
+            </div>
+          </div>
 
-          {/* Continue to Payment Button */}
-          <Button
-            onClick={handleContinueToPayment}
-            disabled={isLoading}
-            style={{
-              fontFamily: 'Inter, sans-serif',
-              fontWeight: 500,
-              fontSize: '16px',
-              backgroundColor: '#18181B',
-              color: 'white',
-              borderRadius: '8px',
-              width: '280px',
-              height: '48px'
-            }}
-          >
-            {isLoading ? "Loading..." : "Continue to Payment"}
-          </Button>
+          {/* Right side - Image */}
+          <div className="flex-1">
+            <img
+              src="/onboarding/0.jpg"
+              alt="Payment illustration"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
       </main>
 
-      {/* Decorative pattern - bottom right */}
-      <div
-        className="absolute bottom-0 right-0 pointer-events-none"
-        style={{
-          width: '50%',
-          height: '50%',
-          backgroundImage: 'url(/hero-pattern.svg)',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'bottom right',
-          backgroundSize: 'contain',
-          opacity: 0.5,
-        }}
-      />
-
       {/* Footer */}
-      <footer className="py-8 flex justify-center relative z-10">
+      <footer className="py-8 flex justify-center">
         <img
           src="/powered-by-mira.svg"
           alt="powered by mira"
